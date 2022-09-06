@@ -87,6 +87,7 @@ class Attention(nn.Module):
 
     def forward(self, x):
         # [batch_size, num_patches + 1, total_embed_dim]
+        # MSA 将token的第三个维度total_embed_dim 划分为num_head 份，即将每个patch的表征划分为num_head份分开计算
         B, N, C = x.shape
 
         # qkv(): -> [batch_size, num_patches + 1, 3 * total_embed_dim]
@@ -98,6 +99,8 @@ class Attention(nn.Module):
 
         # transpose: -> [batch_size, num_heads, embed_dim_per_head, num_patches + 1]
         # @: multiply -> [batch_size, num_heads, num_patches + 1, num_patches + 1]
+        # 多维矩阵乘法将最后两个维度进行计算
+        # attention 计算结果为每个patch之间的关系，故最后两个维度为：num_patches + 1, num_patches + 1
         attn = (q @ k.transpose(-2, -1)) * self.scale
         attn = attn.softmax(dim=-1)
         attn = self.attn_drop(attn)
@@ -251,7 +254,7 @@ class VisionTransformer(nn.Module):
         x = self.blocks(x)
         x = self.norm(x)
         if self.dist_token is None:
-            return self.pre_logits(x[:, 0])
+            return self.pre_logits(x[:, 0])  # class_token 拼接在最前面
         else:
             return x[:, 0], x[:, 1]
 
