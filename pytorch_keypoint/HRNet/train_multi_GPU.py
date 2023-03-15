@@ -212,7 +212,7 @@ if __name__ == "__main__":
         description=__doc__)
 
     # 训练文件的根目录(coco2017)
-    parser.add_argument('--data-path', default='/data/coco2017', help='dataset')
+    parser.add_argument('--data-path', default='../../../datas/COCO', help='dataset')
     # 训练设备类型
     parser.add_argument('--device', default='cuda', help='device')
     # COCO数据集人体关键点信息

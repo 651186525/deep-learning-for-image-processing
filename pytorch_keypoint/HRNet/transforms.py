@@ -47,6 +47,7 @@ def get_max_preds(batch_heatmaps):
     preds[:, :, 0] = idx % w  # column 对应最大值的x坐标
     preds[:, :, 1] = torch.floor(idx / w)  # row 对应最大值的y坐标
 
+    # gt() 判断maxvals是否大于0， reapeat(1, 1, 2): 最后一个通道（列）重复一次， float(): 由Ture转为1，0
     pred_mask = torch.gt(maxvals, 0.0).repeat(1, 1, 2).float().to(batch_heatmaps.device)
 
     preds *= pred_mask

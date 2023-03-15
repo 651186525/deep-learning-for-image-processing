@@ -92,14 +92,14 @@ def evaluate(model, data_loader, device, flip=False, flip_pairs=None):
             flipped_outputs = transforms.flip_back(flipped_outputs, flip_pairs)
             # feature is not aligned, shift flipped heatmap for higher accuracy
             # https://github.com/leoxiaobin/deep-high-resolution-net.pytorch/issues/22
-            flipped_outputs[..., 1:] = flipped_outputs.clone()[..., 0:-1]
+            flipped_outputs[..., 1:] = flipped_outputs.clone()[..., 0:-1]  # todo why
             outputs = (outputs + flipped_outputs) * 0.5
 
         model_time = time.time() - model_time
 
         # decode keypoint
         reverse_trans = [t["reverse_trans"] for t in targets]
-        outputs = transforms.get_final_preds(outputs, reverse_trans, post_processing=True)
+        outputs = transforms.get_final_preds(outputs, reverse_trans, post_processing=True)  # todo what happened
 
         key_metric.update(targets, outputs)
         metric_logger.update(model_time=model_time)

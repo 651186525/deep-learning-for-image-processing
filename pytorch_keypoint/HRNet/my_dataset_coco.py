@@ -102,7 +102,7 @@ class CocoKeypoint(data.Dataset):
 
 
 if __name__ == '__main__':
-    train = CocoKeypoint("/data/coco2017/", dataset="val")
+    train = CocoKeypoint("../../../datas/COCO/", dataset="val")
     print(len(train))
     t = train[0]
     print(t)
